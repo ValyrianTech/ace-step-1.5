@@ -30,11 +30,11 @@ COPY requirements.txt .
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-# Install PyTorch with CUDA support (with extended timeout for large downloads)
+# Install PyTorch with CUDA 12.8 support (with extended timeout for large downloads)
 RUN pip install --no-cache-dir --timeout 300 \
-    torch==2.2.0 \
-    torchaudio==2.2.0 \
-    --index-url https://download.pytorch.org/whl/cu121
+    torch==2.10.0 \
+    torchaudio==2.10.0 \
+    --index-url https://download.pytorch.org/whl/cu128
 
 # Install other requirements
 RUN pip install --no-cache-dir -r requirements.txt
@@ -42,7 +42,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Clone ACE-Step and install using uv (handles local nano-vllm dependency)
 RUN git clone https://github.com/ace-step/ACE-Step-1.5.git /tmp/acestep && \
     cd /tmp/acestep && \
-    uv pip install --system --no-cache . && \
+    uv pip install --no-cache . && \
     rm -rf /tmp/acestep/.git
 
 # -----------------------------------------------------------------------------
@@ -76,7 +76,7 @@ RUN python -c "import os; from huggingface_hub import snapshot_download; snapsho
 # -----------------------------------------------------------------------------
 # Stage 3: Runtime - Minimal image for running the application
 # -----------------------------------------------------------------------------
-FROM nvidia/cuda:12.1.1-runtime-ubuntu22.04 as runtime
+FROM nvidia/cuda:12.8.0-runtime-ubuntu22.04 as runtime
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \

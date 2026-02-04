@@ -22,7 +22,7 @@ soundfile==0.13.1
 librosa==0.10.2
 
 # LLM backend
-vllm==0.8.5
+vllm==0.15.0
 
 # Utilities
 pydantic==2.10.6

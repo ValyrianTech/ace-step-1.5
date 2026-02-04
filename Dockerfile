@@ -97,6 +97,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Copy virtual environment from builder
 COPY --from=builder /opt/venv /opt/venv
 
+# Fix venv Python symlink to point to runtime Python
+RUN ln -sf /usr/bin/python3.11 /opt/venv/bin/python && \
+    ln -sf /usr/bin/python3.11 /opt/venv/bin/python3 && \
+    ln -sf /usr/bin/python3.11 /opt/venv/bin/python3.11
+
 # Copy models from model-downloader stage
 COPY --from=model-downloader /models/checkpoints /app/checkpoints
 

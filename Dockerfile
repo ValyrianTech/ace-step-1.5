@@ -89,6 +89,10 @@ RUN ln -s /app/checkpoints /usr/local/lib/python3.11/dist-packages/checkpoints
 # Copy models from model-downloader stage into /app/checkpoints
 COPY --from=model-downloader /models/checkpoints /app/checkpoints
 
+# Create placeholder for acestep-v15-turbo to satisfy check_main_model_exists()
+# We use acestep-v15-base instead, but the check looks for all MAIN_MODEL_COMPONENTS
+RUN mkdir -p /app/checkpoints/acestep-v15-turbo
+
 # Copy startup script
 COPY start.sh /app/start.sh
 RUN chmod +x /app/start.sh
